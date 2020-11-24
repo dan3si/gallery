@@ -15,7 +15,7 @@ export const Header = () => {
 
 const styles = StyleSheet.create({
   header: {
-    height: 70,
+    height: 80,
     paddingBottom: 8,
     paddingLeft: 10,
     backgroundColor: '#fff',

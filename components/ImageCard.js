@@ -1,8 +1,15 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, Dimensions, Linking, TouchableOpacity } from 'react-native';
-import { BASE_URL, accessToken } from '../global/API';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Dimensions,
+  Linking,
+  TouchableOpacity
+} from 'react-native';
 
-export const ImageCard = ({ imgData, updateImages }) => {
+export const ImageCard = ({ imgData, openImage }) => {
   const getPostAge = () => {
     let timeUnit = 'days';
     let result = (Date.now() - Date.parse(imgData.created_at)) / 86400000;
@@ -22,15 +29,6 @@ export const ImageCard = ({ imgData, updateImages }) => {
     }
 
     return `${Math.floor(result)} ${timeUnit} ago`;
-  }
-  
-  const toggleLike = async () => {
-    await fetch(`${BASE_URL}/${imgData.id}/like${accessToken}`, {
-      method: imgData.liked_by_user
-        ? 'DELETE'
-        : 'POST'
-    });
-    updateImages();
   }
 
   return (
@@ -57,21 +55,20 @@ export const ImageCard = ({ imgData, updateImages }) => {
         </View>
       </View>
 
-      <Image
-        style={styles.img}
-        source={{ uri: imgData.urls.regular }}
-      />
+      <TouchableOpacity
+        onPress={openImage}
+      >
+        <Image
+          style={styles.img}
+          source={{ uri: imgData.urls.regular }}
+        />
+      </TouchableOpacity>
 
       <View style={styles.imgInfoBottom}>
-        <View style={styles.likeWrapper}
-          /*onPress={toggleLike}*/
-        >
+        <View style={styles.likeWrapper}>
           <Image
             style={styles.likeIcon}
-            source={require(imgData.liked_by_user
-              ? '../images/icons/heart-active.png'
-              : '../images/icons/heart.png'
-            )}
+            source={require('../images/icons/heart.png')}
           />
           <Text>{imgData.likes}</Text>
         </View>
